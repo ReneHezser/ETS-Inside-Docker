@@ -8,15 +8,21 @@ RUN powershell -Command `
     Invoke-WebRequest -UseBasicParsing -Uri "https://dotnetbinaries.blob.core.windows.net/servicemonitor/2.0.1.3/ServiceMonitor.exe" -OutFile "C:\ServiceMonitor.exe"
 
 # Add additional IIS features
-RUN Add-WindowsFeature NET-Framework-45-ASPNET; `
+RUN powershell -Command `
+    Add-WindowsFeature NET-Framework-45-ASPNET; `
     Add-WindowsFeature Web-Asp-Net45; `
 	Add-WindowsFeature NET-WCF-HTTP-Activation45;
 
-COPY ETS_Inside_1.3_portable.zip .
-RUN powershell -Command Expand-Archive -Path 'ETS_Inside_1.3_portable.zip' -DestinationPath 'C:\\Program Files\\' -Force;
+COPY ["ETS Inside", "C:\\Program Files\\ETS Inside"]
+COPY ["ETS5", "C:\\Program Files (x86)\\ETS5"]
 
-COPY SetupIIS.ps1 .
-RUN powershell ".\\SetupIIS.ps1"
+# Install the IIS website
+RUN powershell -Command `
+    Import-Module IISAdministration; `
+    $siteName = 'ETS Inside Website'; `
+    New-IISSite -Name $siteName -PhysicalPath 'C:\Program Files\ETS Inside\Client' -BindingInformation '*:8081:'; `
+    New-WebApplication -Site $siteName -Name 'WebServices' -PhysicalPath 'C:\Program Files\ETS Inside\Server'; `
+    Start-IISSite -Name $siteName;
 
 # Expose the default IIS port (for testing)
 EXPOSE 80
