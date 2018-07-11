@@ -11,4 +11,8 @@ ETS Inside Server inside a Docker container
 * Run the cake task `Build-Docker`
 * Run the cake task `Build-Run`
 
-You should now be able to connect to the ETS Inside Server with the ETS Inside client by using a manual connection with <hostname> (not localhost or 127.0.0.1)
+You should now be able to connect to the ETS Inside Server with the ETS Inside client by using a manual connection with "hostname" (not localhost or 127.0.0.1).
+
+## Limitations
+* Currently the server does not find the KNX-IP router for some reason (still investigating).
+* Docker for Windows does not allow USB pass-thru for the dongle. It might be possible to use an Usb-to-Network-Hub to address this issue.
