@@ -1,18 +1,19 @@
 # ETS-Inside-Docker
 ETS Inside Server inside a Docker container
 
-## Manual
-* Extract the `WiX Toolset` into `tmp`
-* Extract `lessmsi` into `tmp`
-* Extract `ETS Inside server v1.3.0.zip` into `tmp`
-* Run the cake task `Extract-Setup`
-* Run the cake task `Extract-Setup2`
-  * Note: Automatic extraction does somehow not work so the UI is opened (for two files), just select all and extract them into `installer-extract2` folder
-* Run the cake task `Build-Docker`
-* Run the cake task `Build-Run`
+## Using the image
+Run the image `https://hub.docker.com/r/roemer/ets-inside-server` with `--network host` parameter.
+You can override the port of the ETS Inside Server by using the environment variable `ETS_PORT`, so for example add `-e ETS_PORT=9090`.
 
-You should now be able to connect to the ETS Inside Server with the ETS Inside client by using a manual connection with "hostname" (not localhost or 127.0.0.1).
+## Manually building the image
+Note: this currently only works on a Windows machine.
+* Make sure to have Docker Desktop installed and Linux Containers enabled.
+* Run the cake task `Download-Tools` which downloads the needed tools
+* Run the cake task `Extract-Part1` which extracts the installers from the meta-installer
+* Run the cake task `Extract-Part2` which extracts the files from the installer
+* Run the cake task `Docker-Linux-Build` which builds the linux image
+* Run the cake task `Docker-Linux-Run` which runs the image in a container
 
-## Limitations
-* Currently the server does not find the KNX-IP router for some reason (still investigating).
-* Docker for Windows does not allow USB pass-thru for the dongle. It might be possible to use an Usb-to-Network-Hub to address this issue.
+## TODO:
+* Find out where to set the volume to
+* Find out how usb-passthru for the dongle works

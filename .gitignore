@@ -1,4 +1,3 @@
 tools/*
-tmp/*
-installer-extract/*
-installer-extract2/*
+tools2/*
+extract-part*/*
