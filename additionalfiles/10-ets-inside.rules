@@ -1,0 +1,5 @@
+# rule allow to access only the KNX licence stick
+# KERNEL=="hidraw*", ATTRS{idVendor}=="2a07", ATTRS{idProduct}=="0102", GROUP="knx", MODE="0660"
+
+# rule to enable access to all usb devices
+KERNEL=="hidraw*", GROUP="knx", MODE="0660"

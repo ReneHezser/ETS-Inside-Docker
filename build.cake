@@ -58,8 +58,12 @@ Task("Extract-Part2")
 Task("Docker-Linux-Build")
 .Does(() => {
     // Copy the runtime config file to run the programm as standalone
-    var fileTarget = part2ExtractDir + Directory("SourceDir") + Directory("ETS Inside") + File("Knx.Ets.Osprey.runtimeconfig.json");
-    CopyFile("./additionalfiles/Knx.Ets.Osprey.runtimeconfig.json", fileTarget);
+    var configfileTarget = part2ExtractDir + Directory("SourceDir") + Directory("ETS Inside") + File("Knx.Ets.Osprey.runtimeconfig.json");
+    CopyFile("./additionalfiles/Knx.Ets.Osprey.runtimeconfig.json", configfileTarget);
+
+    var ruleTarget = part2ExtractDir + Directory("SourceDir") + Directory("ETS Inside") + File("10-ets-inside.rules");
+    CopyFile("./additionalfiles/10-ets-inside.rules", ruleTarget);
+
     // Build the image
     StartProcess("docker", $@"build -t ets-inside-server -f ./dockerfiles/linux/Dockerfile {part2ExtractDir.Path.FullPath}\SourceDir");
 });
